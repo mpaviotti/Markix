@@ -1,6 +1,5 @@
 #include<pic8259.h>
 
-
 unsigned char irq_number[8] = { 
   0xff, 
   0xff, 

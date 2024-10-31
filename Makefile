@@ -2,8 +2,8 @@ CC=gcc -c
 LD=ld
 CFLAGS=-fomit-frame-pointer -O -nostdlib -fno-builtin -march=i386 -nostdinc 
 LDFLAGS=-Bstatic -nostdlib -nostartfiles -nodefaultlibs
-OBJ=boot/start.o main.o interrupt/pic8259.o 
-SOURCES=boot/start.S main.c interrupt/pic8259.c
+OBJ=boot/start.o main.o kernel/screen.o kernel/string.o interrupt/pic8259.o 
+SOURCES=boot/start.S main.c kernel/screen.c kernel/string.c interrupt/pic8259.c
 
 all: $(SOURCES)
 
@@ -23,19 +23,19 @@ hdisk: cleanhdisk
 cleanhdisk:
 	@ rm -f 30M.sample
 
-run: all
+run:	all 
 	bochs -q 'ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14'  'ata0-master: type=disk, path="30M.sample", mode=flat, cylinders=615, heads=6, spt=17, translation=lba' 'floppya: 1_44="./kernelbin", status=inserted' 'boot: floppy'
+
 
 .PHONY: clean install
 
 clean:
-	@ rm -f boot/boot.bin
+
 	@ rm -f *.img *.bin *.map *.iso *~ kernelbin
 	@ rm -f $(OBJ)
 
 install: boot.bin
-	dd if=image.iso of=/dev/fd0
-
+	dd if=kernelbin of=/dev/fd0
 
 .S.o:
 	@ echo "$<: Assembly AT&T"
