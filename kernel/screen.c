@@ -74,7 +74,7 @@ void putc(char c){
     cur.column=0;
   } else {
     memory[offset] = c;
-    memory[offset+1] = 0x0F;
+    memory[offset+1] = COLORS;
 
     cur.column++;
   }

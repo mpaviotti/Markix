@@ -1,14 +1,14 @@
+#include <memory/memory.h>
 #include <gdt.h>
 #include <proc.h>
 
 proc proc_table[NR_PROCS];
 pid_t cur_proc;
 
-/* Inizializza lo stack per un nuovo processo*/
-unsigned int *init_stack(unsigned int *stack_frame, 
-			 void (*func) ()){
+/* Inizializza lo stack per un nuovo processo */
+unsigned int *init_stack(void (*func) ()){
 
-  stackframe *stack = (stackframe *)(stack_frame + STACK_MAX_SIZE-100);
+  stackframe *stack = (stackframe *)(kmalloc(STACK_MAX_SIZE) + STACK_MAX_SIZE-100);
   stack->eip = (unsigned int) func;
   stack->cs = CS_SELECTOR;
   stack->eflags = DEF_EFLAGS;
@@ -107,9 +107,8 @@ pid_t free_pid(){
 int enqueue(void (*proc)(void), char *name){
   pid_t pid = free_pid();
 
-  unsigned int esp = (unsigned int)init_stack(
-			    proc_table[pid].stack_frame, proc);
-  proc_table[pid].esp = esp;
+  proc_table[pid].stack = init_stack(proc);
+  proc_table[pid].esp = (unsigned int)proc_table[pid].stack;
   proc_table[pid].quantum = DEF_QUANTUM;
   proc_table[pid].state = READY;
 

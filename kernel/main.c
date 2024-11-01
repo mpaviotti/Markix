@@ -5,35 +5,49 @@
 #include <interrupt/pit8253.h>
 #include <interrupt/idt.h>
 
+#include <memory/memory.h>
 #include <scheduler/proc.h>
 
 
 int main(){
   int i;
   init_screen();
+  puts("------------------------------------------------------\n");
+  puts("|                      Markix                        |\n");
+  puts("------------------------------------------------------\n");
+  
+  puts("\n\nSistema operativo opensource, \ncreato da Marco Paviotti\n\n\n");
 
+  puts("\nCreazione della tabella di allocazione della memoria...");
+  init_memory();
+  puts("OK.");
+
+  puts("\nInizializzazione della tabella dei processi...");
   init_scheduler();
+  puts("OK.");
+
   enqueue(fittizio, "fittizio");
   enqueue(fittizio1, "fittizio1");
-
-  puts("Markix \n");
-
+  
+  puts("\nImpostazione del PIC...");
   init_pic8259();
-  puts("Impostazione degli iterrupt..");
+  puts("OK.");
+
+  puts("\nInizializzazione degli handler nella IDT...");
   init_idt();
-  puts("OK.\n");
+  puts("OK.");
 
-  puts("Abilitazione della tastiera..");
+  puts("\nAbilitazione dell'handler della tastiera..");
   init_keyb8042();
-  puts("OK.\n");
+  puts("OK.");
 
-  puts("Abilitazione del timer..");
+  puts("\nAbilitazione dell'handler del timer..");
   init_pit8253();
-  puts("OK.\n");
+  puts("OK.");
 
   while(1){
     if(i % 1000 == 0){
-      puts("0");
+      //      puts("0");
       i=0;
     }
     i++;

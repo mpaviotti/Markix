@@ -37,7 +37,7 @@ typedef struct task_state{
 
 typedef struct process{
   unsigned int esp;
-  unsigned int stack_frame[STACK_MAX_SIZE];
+  unsigned int *stack;
   
   /* Scheduler-Related informations */
   char name[20];
@@ -46,12 +46,10 @@ typedef struct process{
 
 } proc;
 
-
 extern void init_scheduler(void);
 extern void schedule(unsigned int *stack);
-
 extern int enqueue(void (*proc)(void), char *name);
-
 extern void fittizio(void);
 extern void fittizio1(void);
+
 #endif
