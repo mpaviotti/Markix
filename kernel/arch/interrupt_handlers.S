@@ -250,12 +250,25 @@ essere cambiato, è qui che avviene il cambio di contesto.
 isr_common:
 	cli
 	pusha
+
+	pushl %ds
+	pushl %es
+	pushl %fs
+	pushl %gs
+	
 	movl  %esp, %eax
-	pushl %eax 
+	pushl %eax
 	call _irq_handler
 	popl %eax
 	mov %eax, %esp
+
+	popl %gs
+	popl %fs
+	popl %es
+	popl %ds
+
 	popa
 	add $4, %esp
 	sti
 	iret
+	

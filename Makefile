@@ -15,6 +15,7 @@ hdisk: cleanhdisk
 cleanhdisk:
 	@ rm -f 30M.sample
 
+
 kernel.o: 
 	$(MAKE) -C kernel/ all
 
@@ -23,7 +24,7 @@ boot.o:
 
 clean:
 	cd kernel && $(MAKE) clean
-	@ rm -f boot/boot.bin	
+	
 	@ rm -f *.img *.bin *.map *.iso *.o
 	@ rm -f $(OBJ)
 	@ rm -f kernelbin kernelbin2

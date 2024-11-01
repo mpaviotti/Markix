@@ -1,7 +1,7 @@
 #ifndef __MEMORY_H
 #define __MEMORY_H
 
-#define START_EXT_MEM 0x1000000 //start from 16MB
+#define START_EXT_MEM 0x200000 //start from 2MB
 #define TOTAL_MEM 0x200000 //Total memory
 
 #define MEM_BITMAP_SIZE 4096

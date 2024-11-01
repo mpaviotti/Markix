@@ -24,6 +24,8 @@ int main(){
   
   init_memory();
 
+  init_gdt();
+  
   puts("\nMemoria riconosciuta: 0x");
   putex(phys_mem_size);
   puts(". OK.");
@@ -42,15 +44,14 @@ int main(){
   puts("\nInizializzazione degli handler nella IDT...");
   init_idt();
   puts("OK.");
-  
+
   puts("\nAbilitazione dell'handler della tastiera..");
   init_keyb8042();
   puts("OK.");
-  
-  /*  puts("\nAbilitazione dell'handler del timer..");
+    /*
+  puts("\nAbilitazione dell'handler del timer..");
   init_pit8253();
   puts("OK.");
-  */
   puts("\nVerifica del disco IDE primario..");
   if(check_fat() < 0){
     puts(" NON TROVATO.");    
@@ -58,7 +59,7 @@ int main(){
     init_fat();    
   }
   puts("OK.");
-  /*
+
   char str[10000];
   char *str1 = "aaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbcccccccccccc";
   for(i = 0; i < 10; i++){
@@ -82,7 +83,7 @@ int main(){
   puts("\n");
 
   fat_entry entry[100];
-  
+
   list_files(entry);
   i=0;
   puts("\n\nLista dei file nella root:");
@@ -94,6 +95,7 @@ int main(){
     i++;
   }
   */
+  asm("sti");
   while(1){
     if(i % 1000 == 0){
       //puts("0");

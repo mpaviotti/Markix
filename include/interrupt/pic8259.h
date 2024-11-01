@@ -38,6 +38,6 @@
 void init_pic8259();
 void enable_irq(char irq, char port);
 void disable_irq(char irq, char port);
-void eofi(char port);
+void eoi(char port);
 #endif
 

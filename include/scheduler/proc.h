@@ -21,6 +21,11 @@
 typedef long pid_t;
 
 typedef struct task_state{
+  unsigned int gs;
+  unsigned int fs;
+  unsigned int es;
+  unsigned int ds;
+
   unsigned int edi;	//+0
   unsigned int esi;	//+1
   unsigned int ebp;	//+2
@@ -33,12 +38,19 @@ typedef struct task_state{
   unsigned int eip;	//+8
   unsigned int cs;	//+9
   unsigned int eflags;	//+10
+
+  unsigned int esp;
+  unsigned int ss;
+
 } stackframe;
 
 typedef struct process{
   unsigned int esp;
+  unsigned int k_esp;
   unsigned int *stack;
-  
+  unsigned int *k_stack;
+  unsigned char type;
+
   /* Scheduler-Related informations */
   char name[20];
   int quantum;
@@ -52,4 +64,5 @@ extern int enqueue(void (*proc)(void), char *name);
 extern void fittizio(void);
 extern void fittizio1(void);
 extern void sleep(long mills);
+extern void switch_user_mode();
 #endif

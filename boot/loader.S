@@ -19,7 +19,7 @@ MultiBootHeader:
 STACKSIZE equ 0x4000                  ; that's 16k.
  
 loader:
-   mov esp, 0x2000000           ; set up the stack
+   mov esp, 0x400000           ; set up the stack
    push eax                           ; pass Multiboot magic number
    push ebx                           ; pass Multiboot info structure
  

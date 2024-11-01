@@ -46,7 +46,6 @@ void enable_irq(char irq, char port){
   byte = inb(port);
   byte = byte & ~(0x01 << irq);
   outb(byte, port);
-  sti();
 }
 
 /* Disabilita l'IRQ */
@@ -58,6 +57,6 @@ void disable_irq(char irq, char port){
   outb(byte, port);
 }
 
-void eofi(char port){
+void eoi(char port){
   outb(END_OF_INT, port);
 }

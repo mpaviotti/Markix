@@ -1,6 +1,6 @@
 include ../../make.rules
 
-OBJ	= pic8259.o pit8253.o keyb8042.o idt.o
+OBJ	= pic8259.o pit8253.o keyb8042.o idt.o gdt.o
 
 all: $(OBJ)
 

@@ -4,7 +4,7 @@
 .sect .bss
 
 .global load_idt
-.global stack_dump
+//.global stack_dump
 	
 .sect .text
 
@@ -16,9 +16,4 @@ load_idt:
 	movl	8(%ebp),%eax
 	lidt 	(%eax)
 	popl	%ebp
-	ret
-
-/* Ritorna il valore dello SP */
-stack_dump:
-	mov 	%esp,	%eax
 	ret

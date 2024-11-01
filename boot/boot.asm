@@ -97,7 +97,7 @@ carica_kernel:
 	;;ES:BX contiene l'indirizzo dove
 	;;int 13h metterà i settori letti
 	;;(un settore = 512byte)
-	mov 	ax, 0x1000	
+	mov 	ax, 0x10000	
 	mov 	es, ax
 	
 	mov 	ch, 0
@@ -183,22 +183,21 @@ run:
 	mov	ds,	ax
 	mov	es, 	ax
 	mov	ss, 	ax
-	mov	esp,	0x9FFF0
+	mov	esp,	0x400000
 	push	dword	0x2
 	popfd
 
-	mov	eax,	0x10000
+	mov	eax,	0x100000
 	
 	cli 
 
-	jmp	dword 	0x10000
+	jmp	dword 	0x100000
 	
 	;; dichiarazione delle variabili da stampare
 LOADING		db	'Loading kernel',0
 DOT		db	'.',0
 OK		db	'OK.',13,10,0
-FDC_ERROR	db	' Errore nella lettura del floppy.', 0xD, 0xA, 0xD, 0xA, 'Impossibile avviare BeWos. Installazione non corretta o floppy danneggiato', 0x0
-	
+FDC_ERROR	db	' Errore nella lettura del floppy.', 0xD, 0xA, 0xD, 0xA,  0x0
 
 	;; questo codice deve
 	;; essere grande 512bit per stare nel boot

@@ -1,7 +1,6 @@
 
-#include <gdt.h>
 #include <arch/asm.h>
-
+#include <interrupt/gdt.h>
 #include <interrupt/idt.h>
 #include <interrupt/pic8259.h>
 #include <scheduler/proc.h>
@@ -15,26 +14,27 @@ idt_table idt[DIM_IDT];
 void (*irq_handlers[N_IRQ])(void);
 
 /*Descrizione delle exceptions */
-char exceptions[19][100] = {"Division by zero\n",
-		     "Debug Exception\n",
-		     "Non-maskable interrupt\n",
-		     "Breakpoint\n",
-		     "Overflow\n",
-		     "Bounds check\n",
-		     "Invalid opcode\n",
-		     "Coprocessor not avaiable\n",
-		     "Double fault\n",
-		     "Coprocessor segment overrun\n",
-		     "Invalid TSS\n",
-		     "Segment not present\n",
-		     "Stack exception\n",
-		     "General Protection\n",
-		     "Page fault\n",
-		     "\n",
-		     "Coprocessor error\n",
-		     "Alignment check exception\n",
-		     "Machine check exception\n"
-		     };
+char exceptions[19][100] = 
+  {"Division by zero\n",
+   "Debug Exception\n",
+   "Non-maskable interrupt\n",
+   "Breakpoint\n",
+   "Overflow\n",
+   "Bounds check\n",
+   "Invalid opcode\n",
+   "Coprocessor not avaiable\n",
+   "Double fault\n",
+   "Coprocessor segment overrun\n",
+   "Invalid TSS\n",
+   "Segment not present\n",
+   "Stack exception\n",
+   "General Protection\n",
+   "Page fault\n",
+   "\n",
+   "Coprocessor error\n",
+   "Alignment check exception\n",
+   "Machine check exception\n"
+};
 
 /* Imposta la IDT passando l'indirizzo 
    dei valori (size+indirizzo) 
@@ -50,7 +50,7 @@ void set_idt(idt_table *base, int number){
 
 /* Stampa lo stato dello stack
    per aiutare il debugging */
-void default_exception(char *str){
+/*void default_exception(char *str){
   #ifdef DEBUG
   unsigned int *stack, *i;
 
@@ -73,12 +73,13 @@ void default_exception(char *str){
   }
 
   nestexc--;
-
 #endif
+
+
   while(1);
   return;
 }
-
+*/
 /* Default handler per gli interrupt*/
 void default_handler(void){
   //puts("\n\n Default handler\n");
@@ -90,7 +91,7 @@ void init_descr(void (*handler)(void), int index, unsigned short opt){
   if(index < DIM_IDT){
     idt[index].offset0_15 = (unsigned int)handler & 0xFFFF;
     idt[index].offset16_31 = (unsigned int)handler >> 16;
-    idt[index].segment = CS_SELECTOR;
+    idt[index].segment = K_CS;
     idt[index].options = opt;
   } else {
     puts("Interrupt non valido");
@@ -109,7 +110,7 @@ void _irq_handler(unsigned int stack){
   int irq;
 
   stck = (unsigned int *)stack;
-  irq = *(stck+8);
+  irq = *(stck+12);
 
   /*Exception*/
   if(irq > 0 && irq < 32){

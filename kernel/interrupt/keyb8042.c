@@ -34,8 +34,7 @@ void keyboard_handler(void){
     }
   } while((temp & 0x02) != 0);
   */		
-  eofi(PIC1_COMMAND);
-
+  eoi(PIC1_COMMAND);
 }
 
 /* Inizializza l'interrupt della tastiera */
@@ -43,4 +42,9 @@ void init_keyb8042(void){
   ins_handler(KEYBOARD_IRQ, keyboard_handler );
   enable_keyb();
   enable_irq(KEYBOARD_IRQ, PIC1_DATA);
+  eoi(PIC1_COMMAND);
+  eoi(PIC1_COMMAND);
+
+  int valore, numport=0x60;
+  __asm__ volatile ("inb %%dx, %%al ":"=a" (valore):"d" (numport));
 }

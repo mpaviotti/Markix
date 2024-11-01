@@ -1,5 +1,5 @@
 include ../../make.rules
-OBJ	= idt.o ioport.o interrupt_handlers.o
+OBJ	= idt.o ioport.o interrupt_handlers.o gdt.o
 
 all: $(OBJ)
 

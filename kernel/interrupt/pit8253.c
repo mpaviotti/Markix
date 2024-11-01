@@ -9,7 +9,7 @@ void timer_handler(void){
 
   ticks++;
 
-  eofi(PIC1_COMMAND);
+  eoi(PIC1_COMMAND);
 }
 
 /* Inizializza il PIT */ 
@@ -27,4 +27,7 @@ void init_pit8253(void){
   outb(high_byte, TIMER_CHAN_0);
 
   enable_irq(CLOCK_IRQ, PIC1_DATA);
+
+  eoi(PIC1_COMMAND);
+  eoi(PIC1_COMMAND);
 }

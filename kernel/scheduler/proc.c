@@ -1,6 +1,6 @@
 
 #include <memory/memory.h>
-#include <gdt.h>
+#include <interrupt/gdt.h>
 #include <proc.h>
 
 proc proc_table[NR_PROCS];
@@ -9,11 +9,18 @@ pid_t cur_proc;
 /* Inizializza lo stack per un nuovo processo */
 unsigned int *init_stack(void (*func) ()){
 
-  stackframe *stack = (stackframe *)(kmalloc(STACK_MAX_SIZE) + STACK_MAX_SIZE-100);
+  stackframe *stack = (stackframe *)(kmalloc(STACK_MAX_SIZE) + STACK_MAX_SIZE-sizeof(stackframe)-1);
+  stack->gs = (unsigned int)USR_DS;
+  stack->fs = (unsigned int)USR_DS;
+  stack->es = (unsigned int)USR_DS;
+  stack->ds = (unsigned int)USR_DS;
+
   stack->eip = (unsigned int) func;
-  stack->cs = CS_SELECTOR;
+  stack->cs = USR_CS;
   stack->eflags = DEF_EFLAGS;
 
+  stack->esp = (unsigned int)(kmalloc(STACK_MAX_SIZE) + STACK_MAX_SIZE);
+  stack->ss = USR_DS;
   return (unsigned int *)stack;
 }
 
@@ -67,7 +74,6 @@ sostituisce lo stack passato da
 interrupt/idt.c: _irq_handler(unsigned int stack) 
 con quello del nuovo processo selezionato 
 da pickup_proc()
-
 */
 void schedule(unsigned int *stack){
 
@@ -79,14 +85,19 @@ void schedule(unsigned int *stack){
     temp = pickup_proc();
     
     //salva lo stack corrente
-    proc_table[cur_proc].esp = *stack;
+    proc_table[cur_proc].k_esp = *stack;
     proc_table[cur_proc].state = READY;
     proc_table[cur_proc].quantum = DEF_QUANTUM;
 
     cur_proc = temp;
-    
+
+    tss_segment.esp = (unsigned int)proc_table[cur_proc].k_esp;
+    tss_segment.esp0 = (unsigned int)proc_table[cur_proc].k_esp;
+    tss_segment.esp1 = (unsigned int)proc_table[cur_proc].k_esp;
+    tss_segment.esp2 = (unsigned int)proc_table[cur_proc].k_esp;
+
     //imposta lo stack del nuovo processo
-    *stack = proc_table[cur_proc].esp;
+    *stack = proc_table[cur_proc].k_esp;
     proc_table[cur_proc].state = RUNNING;
   }
 }
@@ -109,11 +120,9 @@ int enqueue(void (*proc)(void), char *name){
   pid_t pid = free_pid();
 
   proc_table[pid].stack = init_stack(proc);
-  proc_table[pid].esp = (unsigned int)proc_table[pid].stack;
+  proc_table[pid].k_esp = (unsigned int)proc_table[pid].stack;
   proc_table[pid].quantum = DEF_QUANTUM;
   proc_table[pid].state = READY;
-
-  //strcpy(proc_table[pid].name, name);
 }
 
 /* Inizializza lo scheduler */
