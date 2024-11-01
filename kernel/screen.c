@@ -1,14 +1,14 @@
 #include <utils.h>
 #include <screen.h>
-#include <glo.h>
+
 
 /* Puntatore alla memoria video */
-PRIVATE char *memory;
+static char *memory;
 
 /* Cursore corrente identificato
 dalle coordinate 'row' e 'column'
 */
-PRIVATE struct cursor{
+static struct cursor{
   int row;
   int column;
 } cur;
@@ -26,19 +26,48 @@ void init_screen(){
   for(i = 0; i < (NR_COLS * 2 * NR_ROWS); i++){
     putc(' ');
   }
+  cur.row=0;
+  cur.column=0;
 }
 
 /* Converte il cursore corrente 
    in un indirizzo di memoria, il quale 
    è l'offset a partire da MEMORY_ADDRESS
 */
-int cur2add(){
-  return cur.row * 80 * 2 + (cur.column * 2);
+int cur2add(struct cursor tmp){
+  return tmp.row * 80 * 2 + (tmp.column * 2);
+
+}
+
+void stepdown(){
+  int row, column;
+  unsigned char *mem;
+  struct cursor tmp,tmp2;
+
+  mem = MEMORY_ADDRESS;
+
+  for(row = 1; row < NR_ROWS; row++){
+    for(column = 0; column < NR_COLS; column++){
+      tmp.row = row-1;
+      tmp.column = column;
+      tmp2.row = row;
+      tmp2.column = column;
+      mem[cur2add(tmp)] = mem[cur2add(tmp2)];
+    }
+  }
+
+  cur.row = NR_ROWS - 1;
+  cur.column=0;
+  for(column = 0; column < NR_COLS; column++){
+    putc(' ');
+  }
+  cur.row = NR_ROWS - 1;
+  cur.column=0;
 }
 
 /* Stampa un byte */
 void putc(char c){
-  int offset = cur2add();
+  int offset = cur2add(cur);
   
   if(c == '\n'){
     cur.row++;
@@ -56,8 +85,11 @@ void putc(char c){
   }
 
   if(cur.row >= NR_ROWS){ 
-    cur.row = 0;
-    cur.column = 0;
+
+    stepdown();    
+
+    cur.row--;
+    cur.column=0;
   }
 }
 

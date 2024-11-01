@@ -1,7 +1,5 @@
-
-#include "intel.h"
-#include "pic8259.h"
-
+#include <arch/intel.h>
+#include <interrupt/pic8259.h>
 
 /* Iniziliazza opportunamente il PIC
    e disabilita preventivamente 
@@ -37,27 +35,29 @@ void init_pic8259(){
   for(i=0; i <= 7; i++){
     disable_irq(i, PIC2_DATA);
   }
+
 }
 
 /* Abilita l'IRQ */
 void enable_irq(char irq, char port){
-    char byte;
-
-    byte = inportb(port);
-    byte = byte & 0xFD;
-    outportb(byte, port);
-    sti();
+  cli();
+  char byte;
+  
+  byte = inportb(port);
+  byte = byte & ~(0x01 << irq);
+  outportb(byte, port);
+  sti();
 }
 
 /* Disabilita l'IRQ */
 void disable_irq(char irq, char port){
-    char byte;
-
-    byte = inportb(port);
-    byte = byte | ~0xFF;
-    outportb(0xFF, port);
+  char byte;
+  
+  byte = inportb(port);
+  byte = byte | (0x01 << irq);
+  outportb(byte, port);
 }
 
 void eofi(char port){
-  outportb(0x20, port);
+  outportb(END_OF_INT, port);
 }

@@ -5,7 +5,8 @@
 	
 .global outportb
 .global inportb
-
+.global io_wait
+	
 .sect .text
 	
 inportb:
@@ -23,5 +24,12 @@ outportb:
 	movl	12(%ebp), 	%edx	//secondo argomento
 	outb 	%al, 		%dx	//valore, porta
 	popl	%ebp
+	ret
+
+io_wait:
+	jmp 	1f
+1:
+	jmp 	1f
+1:
 	ret
 .sect .data

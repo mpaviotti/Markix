@@ -1,7 +1,8 @@
-#include "intel.h"
-#include "idt.h"
-#include "pic8259.h"
-#include "keyboard.h"
+#include <arch/intel.h>
+#include <interrupt/idt.h>
+#include <interrupt/pic8259.h>
+#include <interrupt/keyb8042.h>
+
 
 /* Disabilita la tastiera */
 void disable_keyb(){
@@ -19,24 +20,27 @@ void enable_keyb(){
 /* Interrupt handler : legge il codice 
    del tasto quando arriva l'interrupt */
 void keyboard_handler(void){
-  unsigned int flags;
-  unsigned char ch;
-  char scancode, temp;
+  char scancode;
+  char temp;
 
-  save(flags);
-  cli();
-  puts("\n");
   scancode = inportb(0x60);
   putc(scancode);
-  puts("\n");
+  /*
+  do{
+    temp = inportb(0x64);
+    if((temp & 0x01) != 0){
+      (void)inportb(0x60);
+      continue;
+    }
+  } while((temp & 0x02) != 0);
+  */		
   eofi(PIC1_COMMAND);
-  restore(flags); 
-  sti();
+
 }
 
 /* Inizializza l'interrupt della tastiera */
-void keyboard_init(void){
-  ins_handler(1, keyboard_handler);
+void init_keyb8042(void){
+  ins_handler(KEYBOARD_IRQ, keyboard_handler );
   enable_keyb();
-  enable_irq(1, PIC1_DATA);
+  enable_irq(KEYBOARD_IRQ, PIC1_DATA);
 }

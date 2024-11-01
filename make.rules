@@ -7,3 +7,8 @@ AR	= ar
 ARFLAGS	=
 RANLIB	= ranlib
 
+
+ifeq ($(DEBUG),y)
+  CFLAGS += -g -DDEBUG # "-O" is needed to expand inlines
+endif
+

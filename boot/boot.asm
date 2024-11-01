@@ -47,9 +47,9 @@ wait2:
 	lgdt	[gdtinfo]
 
 	;; 5) impostazione del bit PE del registro CR0
-	mov	eax,CR0
-	or	al,1
-	mov	CR0,eax
+	mov	eax,	CR0
+	or	al,	1
+	mov	CR0,	eax
 
 	mov	ax, 	0x10
 	mov	ds,	ax
@@ -189,7 +189,7 @@ run:
 LOADING		db	'Loading kernel',0
 DOT		db	'.',0
 OK		db	'OK.',13,10,0
-FDC_ERROR	db	' Errore nella lettura del floppy.', 0xD, 0xA, 0xD, 0xA, 'Impossibile avviare BeWos. Installazione non corretta o floppy danneggiato', 0x0
+FDC_ERROR	db	' Errore nella lettura del floppy.', 0xD, 0xA, 0xD, 0xA, 'Impossibile avviare Markix. Installazione non corretta o floppy danneggiato', 0x0
 	
 
 	;; questo codice deve

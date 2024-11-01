@@ -1,25 +1,43 @@
 #include <screen.h>
-#include "arch/idt.h"
-#include "arch/keyboard.h"
-#include "arch/intel.h"
+
+#include <interrupt/keyb8042.h>
+#include <interrupt/pic8259.h>
+#include <interrupt/pit8253.h>
+#include <interrupt/idt.h>
+
+#include <scheduler/proc.h>
+
 
 int main(){
-
-  init_screen();
   int i;
+  init_screen();
 
-  puts("Markix ");
-  puts("\n");
-  puts("Impostazione degli interrupt..");
-  init_int();
+  init_scheduler();
+  enqueue(fittizio, "fittizio");
+  enqueue(fittizio1, "fittizio1");
+
+  puts("Markix \n");
+
+  init_pic8259();
+  puts("Impostazione degli iterrupt..");
+  init_idt();
   puts("OK.\n");
 
   puts("Abilitazione della tastiera..");
-  keyboard_init();
+  init_keyb8042();
   puts("OK.\n");
 
-  while(1);
+  puts("Abilitazione del timer..");
+  init_pit8253();
+  puts("OK.\n");
 
+  while(1){
+    if(i % 1000 == 0){
+      puts("0");
+      i=0;
+    }
+    i++;
+  }
   return 0;
 
 }
