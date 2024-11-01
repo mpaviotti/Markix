@@ -133,10 +133,8 @@ leggi:
 	inc	ch		
 	jmp 	leggi
 	
-caricato:	
+caricato:
 	ret
-
-	
 	;;qui inizia la dichiarazione della GDT
 	;; lgdt carica la lunghezza e l'indirizzo
 	
@@ -156,8 +154,8 @@ null_desc:
 flat_code:
     dw  0xFFFF  ; segment limit  0->15
     dw  0x0000  ; base segement 0->15
-    db  0x00  ; base segment 16->23
-    db  0x9A  ; P=1 DPL=00b DT=1 CODE=1 C=0 R=1 A=0
+    db  0x00 	; base segment 16->23
+    db  0x9A	; P=1 DPL=00b DT=1 CODE=1 C=0 R=1 A=0
     db  0xCF  	; G=1 D/G=1 0 AVL=0 and segment lmit 16->19=0xF
     db  0x00  	; base segment 24->32
 
@@ -175,14 +173,13 @@ gdtlength equ $ - gdt_table  ;calcola la dimensione della tabella
 run:
 	mov	ax,	0x10
 	mov	ds,	ax
-	mov	es, ax
-	mov	ss, ax
+	mov	es, 	ax
+	mov	ss, 	ax
 	mov	esp,	0x9FFF0
 	push	dword	0x2
 	popfd
 
 	mov	eax,	0x10000
-
 	
 	cli 
 

@@ -8,6 +8,6 @@
 extern void init_screen();
 extern void putc(char c);
 extern void puts(char *str);
-
-
+extern void putb(unsigned char c);
+extern void putex(unsigned int n);
 #endif
