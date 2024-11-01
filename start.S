@@ -1,5 +1,3 @@
-/* Markix starts here :) */
-
 .extern main
 .global _start
 

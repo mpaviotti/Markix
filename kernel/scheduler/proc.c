@@ -1,3 +1,4 @@
+
 #include <memory/memory.h>
 #include <gdt.h>
 #include <proc.h>
@@ -112,7 +113,7 @@ int enqueue(void (*proc)(void), char *name){
   proc_table[pid].quantum = DEF_QUANTUM;
   proc_table[pid].state = READY;
 
-  strcpy(proc_table[pid].name, name);
+  //strcpy(proc_table[pid].name, name);
 }
 
 /* Inizializza lo scheduler */
@@ -127,3 +128,10 @@ void init_scheduler(void){
 
 }
 
+/* TODO: implementare con l'uso del clock */
+void sleep(long mills){
+  int i;
+  for(i = 0; i < mills*1000; i++){
+    io_wait();
+  }
+}

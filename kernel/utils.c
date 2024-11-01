@@ -21,7 +21,7 @@ void ch2ex(unsigned char c, char *ex){
 
 
   for(i = 0; i < 4; i++){
-    msn += (binary[i]=='1')?exp(2, 3-i):0;
+    msn +=(binary[i]=='1')?(char)exp(2, 3-i):0;
   }
 
   for(i = 4; i < 8; i++){
@@ -65,3 +65,4 @@ void ch2bin(unsigned char c, char *bin){
     c = c / 2;
   }
 }
+

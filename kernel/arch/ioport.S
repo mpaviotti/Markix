@@ -2,14 +2,35 @@
 .sect .rom
 .sect .data
 .sect .bss
-	
-.global outportb
-.global inportb
+
+.global inw
+.global outw
+
+.global inb
+.global outb
+
 .global io_wait
 	
 .sect .text
-	
-inportb:
+
+inw:
+	pushl 	%ebp
+	movl	%esp,		%ebp
+	movl	8(%ebp),	%edx	//primo argomento
+	inw 	%dx, 		%ax	//porta, valore
+	popl	%ebp
+	ret
+
+outw:
+	pushl	%ebp
+	movl	%esp,		%ebp
+	movl	8(%ebp),	%eax	//primo argomento	
+	movl	12(%ebp), 	%edx	//secondo argomento
+	outw 	%ax, 		%dx	//valore, porta
+	popl	%ebp
+	ret
+
+inb:
 	pushl 	%ebp
 	movl	%esp,		%ebp
 	movl	8(%ebp),	%edx	//primo argomento
@@ -17,7 +38,7 @@ inportb:
 	popl	%ebp
 	ret
 
-outportb:
+outb:
 	pushl	%ebp
 	movl	%esp,		%ebp
 	movl	8(%ebp),	%eax	//primo argomento	

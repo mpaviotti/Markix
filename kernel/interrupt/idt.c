@@ -1,5 +1,6 @@
+
 #include <gdt.h>
-#include <arch/intel.h>
+#include <arch/asm.h>
 
 #include <interrupt/idt.h>
 #include <interrupt/pic8259.h>
@@ -14,7 +15,7 @@ idt_table idt[DIM_IDT];
 void (*irq_handlers[N_IRQ])(void);
 
 /*Descrizione delle exceptions */
-char **exceptions = {"Division by zero\n",
+char exceptions[19][100] = {"Division by zero\n",
 		     "Debug Exception\n",
 		     "Non-maskable interrupt\n",
 		     "Breakpoint\n",
@@ -32,7 +33,7 @@ char **exceptions = {"Division by zero\n",
 		     "\n",
 		     "Coprocessor error\n",
 		     "Alignment check exception\n",
-		     "Machine check exception"
+		     "Machine check exception\n"
 		     };
 
 /* Imposta la IDT passando l'indirizzo 

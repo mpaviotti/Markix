@@ -1,6 +1,3 @@
-#include "intel.h"
-	
-	
 .sect .text
 .sect .rom
 .sect .data

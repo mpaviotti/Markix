@@ -6,6 +6,7 @@ char mem_bitmap[MEM_BITMAP_SIZE];
 
 /* Calcola la dimensione della memoria fisica */
 unsigned int mem_size(void){
+  
   unsigned int *mem_current = (unsigned int *)START_EXT_MEM;
 
   /* assumiamo che la memoria sia grande 'TOTAL_MEM'*/
@@ -41,11 +42,11 @@ unsigned int mem_size(void){
 void init_memory(void){
   int i;
   unsigned char bit_value = 0x00;
-
   phys_mem_size = mem_size();
 
   for(i = 0; i < MEM_BITMAP_SIZE; i++){
-
+    
+    //imposta come occupate le pagine non valide
     if(i * 8 * PAGE_SIZE > mem_size){
       bit_value = 0xFF;
     }

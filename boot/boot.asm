@@ -4,13 +4,16 @@
 	;; leggere "intel 80386 programmer's reference manual"
 
 [BITS 16]       ;è codice a 16 bit perchè siamo in real-mode
-[ORG 0x7C00]    ;i primi 512 bytes vengono caricati all' indirizzo 0x7c00
+	;;  i primi 512 bytes vengono caricati all' indirizzo 0x7c00 
+
+	[ORG 0x7C00]	
 
 	xor 	ax, ax
 	mov	ds, ax
 	mov	ss, ax
 	mov	sp, 0xFFFE	
 
+	
 	mov	bx,LOADING
 	call	write
 
@@ -54,6 +57,11 @@ wait2:
 	mov	ax, 	0x10
 	mov	ds,	ax
 
+	; Floppy motor-off
+	mov	dx, 0x3F2
+	mov	al, 0xC
+	out	dx, al
+
 	;; 6) far jump al codice a 32 bit
 	jmp	dword 0x08:run
 
@@ -88,12 +96,12 @@ carica_kernel:
 
 	;;ES:BX contiene l'indirizzo dove
 	;;int 13h metterà i settori letti
-	;;(un settore = 512bit = 64 byte)
+	;;(un settore = 512byte)
 	mov 	ax, 0x1000	
 	mov 	es, ax
 	
-	mov 	ch, 0		
-	mov 	cl, 2		
+	mov 	ch, 0
+	mov 	cl, 2	
 
 	mov 	dh, 0		
 	mov	dl, 0

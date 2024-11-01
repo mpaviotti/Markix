@@ -51,5 +51,5 @@ extern void schedule(unsigned int *stack);
 extern int enqueue(void (*proc)(void), char *name);
 extern void fittizio(void);
 extern void fittizio1(void);
-
+extern void sleep(long mills);
 #endif

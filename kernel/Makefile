@@ -1,8 +1,9 @@
 include ../make.rules
 
-OBJ	= main.o screen.o string.o math.o utils.o
+OBJ	= kmain.o main.o screen.o string.o math.o utils.o
 
-all: $(OBJ) interrupt.o arch.o scheduler.o memory.o
+all: $(OBJ) interrupt.o arch.o scheduler.o \
+	memory.o filesystem.o
 
 interrupt.o:
 	@ make -C interrupt/ all
@@ -16,11 +17,16 @@ scheduler.o:
 memory.o:
 	@ make -C memory/ all
 
+filesystem.o:
+	@ make -C filesystem/ all
+
 clean:
 	cd arch && $(MAKE) clean
 	cd interrupt && $(MAKE) clean
 	cd scheduler && $(MAKE) clean
 	cd memory && $(MAKE) clean
+	cd filesystem && $(MAKE) clean
+
 	@ rm -f *.img *.bin *.map *.iso *.o
 	@ rm -f $(OBJ)
 

@@ -1,14 +1,15 @@
 MAKE 	= make
 CC	= gcc -c
 LD	= ld
-CFLAGS	= -fomit-frame-pointer -O -nostdlib -fno-builtin -march=i386 -nostdinc 
+CFLAGS	= -fomit-frame-pointer -O0 -nostdlib -fno-builtin -march=i386 -nostdinc 
 LDFLAGS	= -Bstatic -nostdlib -nostartfiles -nodefaultlibs
 AR	= ar
 ARFLAGS	=
 RANLIB	= ranlib
-
+BCHFLAGS = 'ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14'  'ata0-master: type=disk, path="30M.sample", mode=flat, cylinders=615, heads=6, spt=17, translation=lba' 'floppya: 1_44="./kernelbin", status=inserted' 'boot: floppy '
 
 ifeq ($(DEBUG),y)
-  CFLAGS += -g -DDEBUG # "-O" is needed to expand inlines
+     BCHFLAGS += 'gdbstub: enabled=1, port=1234, text_base=0, data_base=0, bss_base=0 '
+     CFLAGS += -g -DDEBUG  # "-O" is needed to expand inlines
 endif
 

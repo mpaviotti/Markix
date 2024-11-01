@@ -28,6 +28,7 @@ void init_screen(){
   }
   cur.row=0;
   cur.column=0;
+
 }
 
 /* Converte il cursore corrente 
@@ -35,8 +36,7 @@ void init_screen(){
    è l'offset a partire da MEMORY_ADDRESS
 */
 int cur2add(struct cursor tmp){
-  return tmp.row * 80 * 2 + (tmp.column * 2);
-
+  return (tmp.row * 80 + tmp.column)*2;
 }
 
 void stepdown(){
@@ -118,4 +118,10 @@ void putex(unsigned int n){
   i2ex(n, ex);
   ex[8]='\0';
   puts(ex);
+}
+
+void putexln(unsigned int n){
+  puts("0x");
+  putex(n);
+  puts("\n");
 }

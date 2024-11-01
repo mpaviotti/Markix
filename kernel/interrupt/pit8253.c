@@ -1,4 +1,5 @@
-#include <arch/intel.h>
+
+#include <arch/asm.h>
 #include <interrupt/pic8259.h>
 #include <interrupt/pit8253.h>
 
@@ -21,9 +22,9 @@ void init_pit8253(void){
 
   ins_handler(CLOCK_IRQ, timer_handler);
   
-  outportb(TIMER_CTRL_COMMAND, TIMER_CTRL);
-  outportb(low_byte, TIMER_CHAN_0);
-  outportb(high_byte, TIMER_CHAN_0);
+  outb(TIMER_CTRL_COMMAND, TIMER_CTRL);
+  outb(low_byte, TIMER_CHAN_0);
+  outb(high_byte, TIMER_CHAN_0);
 
   enable_irq(CLOCK_IRQ, PIC1_DATA);
 }
