@@ -6,6 +6,8 @@ all:
 
 	nasm -fbin boot/boot.asm -o boot/boot.bin
 
+	$(LD) $(LDFLAGS) -e _start --oformat binary -o markix.bin $(OBJ) interrupt/*.o -Ttext 0x10000 -Map kernel.map
+
 	@ make -I ../include/ $(OBJ)
 
 	@ ld $(LDFLAGS) -e _start --oformat binary -o kernel.bin $(OBJ) -Ttext 0x10000 -Map kernel.map
