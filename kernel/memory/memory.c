@@ -85,25 +85,25 @@ void *alloc_pages(int pages){
 
       for(lst_bit = 0; lst_bit < 8; lst_bit++){
 
-	/* se il bit=1 la pagina è occupata 
-	 e resetta tutto al fine di trovare
-	 delle pagine contigue*/
-	if(byte & 0x80){
-	  pages_found=0;
+        /* se il bit=1 la pagina è occupata
+           e resetta tutto al fine di trovare
+           delle pagine contigue*/
+        if(byte & 0x80){
+          pages_found=0;
 
-	  fst_bit = (lst_bit + 1) % 8;
-	  fst_index = lst_index + (fst_bit == 0)?1 : 0;
-	} else {
-	  pages_found++;
-	  if(pages_found >= pages){
-	    break;
-	  }
-	}
+          fst_bit = (lst_bit + 1) % 8;
+          fst_index = lst_index + (fst_bit == 0)?1 : 0;
+        } else {
+          pages_found++;
+          if(pages_found >= pages){
+            break;
+          }
+        }
 	
-	byte = byte << 1;
+        byte = byte << 1;
       }
       lst_index++;
-  }while(pages_found < pages && lst_index < MEM_BITMAP_SIZE);
+  } while(pages_found < pages && lst_index < MEM_BITMAP_SIZE);
 
   lst_index--;
 

@@ -3,7 +3,7 @@ include make.rules
 OBJ	= start.o
 
 all:  kernel.o boot.o
-	ld -T linker.ld -o kernel.bin boot/loader.o kernel/*.o kernel/arch/*.o kernel/interrupt/*.o kernel/scheduler/*.o kernel/memory/*.o kernel/filesystem/*.o -Map kernel.map
+	i386-elf-ld -T linker.ld -o kernel.bin boot/loader.o kernel/*.o kernel/arch/*.o kernel/interrupt/*.o kernel/scheduler/*.o kernel/memory/*.o kernel/filesystem/*.o -Map kernel.map
 	cat  stage1 stage2 pad kernel.bin > kernelbin
 
 run:	all 
@@ -24,7 +24,6 @@ boot.o:
 
 clean:
 	cd kernel && $(MAKE) clean
-	
 	@ rm -f *.img *.bin *.map *.iso *.o
 	@ rm -f $(OBJ)
 	@ rm -f kernelbin kernelbin2
@@ -32,7 +31,7 @@ install: all
 	dd if=kernelbin of=/dev/fd0
 
 .S.o:
-	@ $(CC) $(CFLAGS) -I ./include/ -o $@  $< 
+	$(CC) $(CFLAGS) -I ./include/ -o $@  -c $<
 
 .c.o:
-	@ $(CC) $(CFLAGS) -I ./include/ -o $@  $< 
+	$(CC) $(CFLAGS) -I ./include/ -o $@  -c $<
