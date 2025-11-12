@@ -1,18 +1,21 @@
 include make.rules
 
-all:
+all: boot.o interrupt.o
 
 	@ make clean	
 
 	nasm -fbin boot/boot.asm -o boot/boot.bin
 
-	$(LD) $(LDFLAGS) -e _start --oformat binary -o markix.bin $(OBJ) interrupt/*.o -Ttext 0x10000 -Map kernel.map
+	$(LD) $(LDFLAGS) -e _start --oformat binary -o markix.bin interrupt/*.o -Ttext 0x10000 -Map kernel.map
 
-	@ make -I ../include/ $(OBJ)
+	cat boot/boot.bin markix.bin > kernel.bin
 
-	@ ld $(LDFLAGS) -e _start --oformat binary -o kernel.bin $(OBJ) -Ttext 0x10000 -Map kernel.map
+interrupt.o:
+	$(MAKE) -C kernel/ all
 
-	cat boot/boot.bin kernel.bin > kernelbin
+boot.o:
+	$(MAKE) -C boot/ all
+
 
 hdisk: cleanhdisk
 	dd if=/dev/zero of=30M.sample bs=512 count=62730
