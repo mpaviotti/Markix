@@ -1,9 +1,4 @@
-CC=gcc -c
-LD=ld
-CFLAGS=-fomit-frame-pointer -O -nostdlib -fno-builtin -march=i386 -nostdinc 
-LDFLAGS=-Bstatic -nostdlib -nostartfiles -nodefaultlibs
-OBJ=boot/start.o main.o interrupt/pic8259.o 
-SOURCES=boot/start.S main.c interrupt/pic8259.c
+include make.rules
 
 all: $(SOURCES)
 
