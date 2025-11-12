@@ -1,6 +1,6 @@
 include make.rules
 
-all: $(SOURCES)
+all:
 
 	@ make clean	
 
