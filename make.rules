@@ -1,0 +1,14 @@
+MAKE 	= make
+CC	= gcc -c
+LD	= ld
+CFLAGS	= -fomit-frame-pointer -ffreestanding -fno-pic -O -nostdlib -fno-builtin -march=i386 -nostdinc
+LDFLAGS	= -Bstatic -nostdlib
+AR	= ar
+ARFLAGS	=
+RANLIB	= ranlib
+
+
+ifeq ($(DEBUG),y)
+  CFLAGS += -g -DDEBUG # "-O" is needed to expand inlines
+endif
+
