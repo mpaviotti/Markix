@@ -48,8 +48,10 @@ void fittizio1(void){
   }
 }
 
-/* Fa la scansione della tabella dei processi per 
-   trovare uno che sia pronto (READY) ad essere eseguito*/
+/*
+   Fa la scansione della tabella dei processi per
+   trovare uno che sia pronto (READY) ad essere eseguito
+*/
 pid_t pickup_proc(){
   pid_t i;
   i=cur_proc;

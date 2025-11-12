@@ -1,4 +1,4 @@
-MAKE 	= make
+MAKE = make
 CC	= gcc -c
 LD	= ld
 CFLAGS	= -fomit-frame-pointer -O0 -nostdlib -fno-builtin -march=i386 -nostdinc 
