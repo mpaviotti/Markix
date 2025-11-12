@@ -1,0 +1,5 @@
+ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
+ata0-master: type=disk, path="30M.sample", mode=flat, cylinders=615, heads=6, spt=17, translation=lba
+floppya: 1_44="./kernelbin", status=inserted
+boot: floppy
+sound: enabled=0

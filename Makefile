@@ -5,13 +5,13 @@ OBJ	= start.o
 all:  kernel.o boot.o $(OBJ)
 
 	$(LD) $(LDFLAGS) -e _start --oformat binary \
-		-o kernel.bin $(OBJ) kernel/*.o \
+		-o markix.bin $(OBJ) kernel/*.o \
 		kernel/arch/*.o kernel/interrupt/*.o kernel/scheduler/*.o \
 		-Ttext 0x10000 -Map kernel.map
 
-	cat boot/boot.bin kernel.bin > kernelbin
+	cat boot/boot.bin markix.bin > kernel.bin
 run: all
-	bochs -q 'ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14'  'ata0-master: type=disk, path="30M.sample", mode=flat, cylinders=615, heads=6, spt=17, translation=lba' 'floppya: 1_44="./kernelbin", status=inserted' 'boot: floppy'
+	bochs -q -f bochsrc.txt
 
 hdisk: cleanhdisk
 	dd if=/dev/zero of=30M.sample bs=512 count=62730
@@ -27,8 +27,7 @@ boot.o:
 
 clean:
 	cd kernel && $(MAKE) clean
-	
-	@ rm -f *.img *.bin *.map *.iso *.o kernelbin
+	@ rm -f *.img *.bin *.map *.iso *.o kernelbin kernel.bin
 	@ rm -f $(OBJ)
 
 install: all
@@ -38,4 +37,4 @@ install: all
 	@ $(CC) $(CFLAGS) -I ./include/ -o $@  $< 
 
 .c.o:
-	@ $(CC) $(CFLAGS) -I ./include/ -o $@  $< 
+	@ $(CC) $(CFLAGS) -I ./include/ -o $@  $<

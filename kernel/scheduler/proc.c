@@ -1,5 +1,6 @@
 #include <gdt.h>
 #include <proc.h>
+#include <string.h>
 
 proc proc_table[NR_PROCS];
 pid_t cur_proc;

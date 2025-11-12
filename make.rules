@@ -1,8 +1,8 @@
 MAKE 	= make
 CC	= gcc -c
 LD	= ld
-CFLAGS	= -fomit-frame-pointer -O -nostdlib -fno-builtin -march=i386 -nostdinc 
-LDFLAGS	= -Bstatic -nostdlib -nostartfiles -nodefaultlibs
+CFLAGS	= -fomit-frame-pointer -ffreestanding -fno-pic -O -nostdlib -fno-builtin -march=i386 -nostdinc
+LDFLAGS	= -Bstatic -nostdlib
 AR	= ar
 ARFLAGS	=
 RANLIB	= ranlib
