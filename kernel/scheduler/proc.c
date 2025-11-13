@@ -17,31 +17,7 @@ unsigned int *init_stack(unsigned int *stack_frame,
   return (unsigned int *)stack;
 }
 
-/* Un processo di esempio */
-void fittizio(void){
-  int i = 0;
-  while(1){
-    if(i % 1000 == 0){
-      puts("1");
-      i=0;
-    }
-    i++;
-  }
-}
-
-/* Un altro processo di esempio */
-void fittizio1(void){
-  int i = 0;
-  while(1){
-    if(i % 1000==0){
-      puts("2");
-      i=0;
-    }
-    i++;
-  }
-}
-
-/* Fa la scansione della tabella dei processi per 
+/* Fa la scansione della tabella dei processi per
    trovare uno che sia pronto (READY) ad essere eseguito*/
 pid_t pickup_proc(){
   pid_t i;

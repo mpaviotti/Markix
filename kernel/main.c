@@ -8,15 +8,39 @@
 #include <scheduler/proc.h>
 
 
+/* Un processo di esempio */
+void thread1(void){
+  int i = 0;
+  while(1){
+    if(i % 1000 == 0){
+      puts("1");
+      i=0;
+    }
+    i++;
+  }
+}
+
+/* Un altro processo di esempio */
+void thread2(void){
+  int i = 0;
+  while(1){
+    if(i % 1000==0){
+      puts("2");
+      i=0;
+    }
+    i++;
+  }
+}
+
 int main(){
   int i;
   init_screen();
 
   init_scheduler();
-  enqueue(fittizio, "fittizio");
-  enqueue(fittizio1, "fittizio1");
 
-  puts("Markix \n");
+  puts("----------------------------------- \n");
+  puts("|            Markix OS             | \n");
+  puts("----------------------------------- \n");
 
   init_pic8259();
   puts("Impostazione degli iterrupt..");
@@ -31,9 +55,11 @@ int main(){
   init_pit8253();
   puts("OK.\n");
 
+  enqueue(thread1, "Thread 1");
+  enqueue(thread2, "Thread 2");
+
   while(1){
     if(i % 1000 == 0){
-      puts("0");
       i=0;
     }
     i++;
@@ -41,3 +67,4 @@ int main(){
   return 0;
 
 }
+

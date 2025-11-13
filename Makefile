@@ -10,6 +10,7 @@ all:  kernel.o boot.o $(OBJ)
 		-Ttext 0x10000 -Map kernel.map
 
 	cat boot/boot.bin markix.bin > kernel.bin
+
 run: all
 	bochs -q -f bochsrc.txt
 

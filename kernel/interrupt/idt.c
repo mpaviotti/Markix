@@ -120,7 +120,7 @@ void _irq_handler(unsigned int stack){
 
     (*irq_handlers[irq])(); 
   
-    if(irq == 1){
+    if(irq == 0){
       schedule(&stack);
     }
   }
